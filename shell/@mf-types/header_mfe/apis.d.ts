@@ -1,3 +1,3 @@
 
-    export type RemoteKeys = 'header_mfe/button';
-    type PackageType<T> = T extends 'header_mfe/button' ? typeof import('header_mfe/button') :any;
+    export type RemoteKeys = 'header_mfe/Button' | 'header_mfe/Navbar';
+    type PackageType<T> = T extends 'header_mfe/Navbar' ? typeof import('header_mfe/Navbar') :T extends 'header_mfe/Button' ? typeof import('header_mfe/Button') :any;

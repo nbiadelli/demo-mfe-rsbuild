@@ -1,6 +1,6 @@
+import { ModuleFederationPlugin } from '@module-federation/enhanced/rspack';
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
-import { ModuleFederationPlugin } from '@module-federation/enhanced/rspack';
 
 export default defineConfig({
   plugins: [pluginReact()],
@@ -9,7 +9,7 @@ export default defineConfig({
     client: {
       host: 'localhost',
       protocol: 'ws',
-      port: 3091
+      port: 3091,
     },
   },
   server: {
@@ -19,13 +19,14 @@ export default defineConfig({
     rspack: {
       output: {
         // You need to set a unique value that is not equal to other applications
-        uniqueName: 'header_mfe'
+        uniqueName: 'header_mfe',
       },
       plugins: [
         new ModuleFederationPlugin({
           name: 'header_mfe',
           exposes: {
-            './button': './src/button.tsx',
+            './Button': './src/Button.tsx',
+            './Navbar': './src/Navbar.tsx',
           },
           shared: ['react', 'react-dom'],
         }),

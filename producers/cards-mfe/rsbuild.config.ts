@@ -9,7 +9,7 @@ export default defineConfig({
     client: {
       host: 'localhost',
       protocol: 'ws',
-      port: 3092
+      port: 3092,
     },
   },
   server: {
@@ -19,13 +19,13 @@ export default defineConfig({
     rspack: {
       output: {
         // You need to set a unique value that is not equal to other applications
-        uniqueName: 'cards_mfe'
+        uniqueName: 'cards_mfe',
       },
       plugins: [
         new ModuleFederationPlugin({
           name: 'cards_mfe',
           exposes: {
-            './button': './src/button.tsx',
+            './Cards': './src/Cards.tsx',
           },
           shared: ['react', 'react-dom'],
         }),
