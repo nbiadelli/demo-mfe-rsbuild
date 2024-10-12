@@ -25,7 +25,6 @@ export default defineConfig({
         new ModuleFederationPlugin({
           name: 'header_mfe',
           exposes: {
-            './Button': './src/Button.tsx',
             './Navbar': './src/Navbar.tsx',
           },
           shared: ['react', 'react-dom'],

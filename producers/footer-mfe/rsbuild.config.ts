@@ -9,7 +9,7 @@ export default defineConfig({
     client: {
       host: 'localhost',
       protocol: 'ws',
-      port: 3093
+      port: 3093,
     },
   },
   server: {
@@ -19,7 +19,7 @@ export default defineConfig({
     rspack: {
       output: {
         // You need to set a unique value that is not equal to other applications
-        uniqueName: 'footer_mfe'
+        uniqueName: 'footer_mfe',
       },
       plugins: [
         new ModuleFederationPlugin({
