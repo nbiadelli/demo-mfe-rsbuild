@@ -2,8 +2,28 @@ import { useEffect } from 'react';
 import { Product } from './models/products';
 import { useCartContext } from './CartContext';
 
+function getCurrencySymbol() {
+  const userLocale = navigator?.language;
+  const currencyFormatter = new Intl.NumberFormat(userLocale, {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+  });
+  const parts = currencyFormatter.formatToParts(1);
+  const currencySymbol = parts?.find((part) => part.type === 'currency')?.value;
+  return currencySymbol || '$';
+}
+
 export default function NavbarComponent() {
-  const { products, addToCart } = useCartContext();
+  const { products, addToCart, removeFromCart, decremnentProduct } =
+    useCartContext();
+  const computedQuantity = products
+    .map((x) => x.quantity)
+    .reduce((acc, v) => acc + v, 0);
+  const computedTotal = products
+    .map((x) => x.value)
+    .reduce((acc, v) => acc + v, 0)
+    .toFixed(2);
 
   const handleCardSelected = (data: Product) => {
     addToCart(data);
@@ -58,7 +78,6 @@ export default function NavbarComponent() {
               </g>
             </svg>
             NatyShop
-            <span> aaa </span>
           </a>
         </div>
         <div className="flex-none">
@@ -83,23 +102,93 @@ export default function NavbarComponent() {
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                   />
                 </svg>
-                <span className="badge badge-sm indicator-item">8</span>
+                {computedQuantity ? (
+                  <span className="badge badge-sm indicator-item">
+                    {computedQuantity}
+                  </span>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
             <div
               tabIndex={0}
-              className="card card-compact dropdown-content bg-base-100 mt-3 w-52 shadow"
+              className="card card-compact dropdown-content bg-base-100 mt-3 md:w-[30rem] w-[80vw] shadow"
             >
               <div className="card-body">
+                {products.length ? (
+                  <table className="table-auto">
+                    <thead>
+                      <tr>
+                        <th>Prodcut</th>
+                        <th>Quantity</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {products.map((x, i) => (
+                        <tr key={x.product.id + '__' + i}>
+                          <td className="flex flex-row items-center gap-1">
+                            <button
+                              className="w-4 h-4 bg-slate-100 hover:bg-red-300 text-white rounded-full flex items-center justify-center inline-block"
+                              onClick={(e) => removeFromCart(e, x.product.id)}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-3 w-3"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </button>
+                            <span>{x.product.title}</span>
+                          </td>
+                          <td>
+                            <div className="flex items-center border border-gray-300 rounded space-x-2 w-[101px]">
+                              <button
+                                id="decrement"
+                                className={`text-green-600 font-black m-[2px] px-2 py-1 rounded focus:outline-none animated-background ${
+                                  x.quantity === 0 ? 'opacity-30' : ''
+                                }`}
+                                onClick={() => decremnentProduct(x.product.id)}
+                              >
+                                -
+                              </button>
+                              <span className="w-8 text-center">
+                                {x.quantity}
+                              </span>
+                              <button
+                                id="increment"
+                                className="text-green-600 font-black  m-[2px] px-2 py-1 rounded focus:outline-none animated-background"
+                                onClick={() => addToCart(x.product)}
+                              >
+                                +
+                              </button>
+                            </div>
+                          </td>
+                          <td>
+                            {getCurrencySymbol()} {x.value.toFixed(2)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <></>
+                )}
                 <span className="text-lg font-bold">
-                  {products.length} 8 Items
+                  {computedQuantity} {computedQuantity > 1 ? 'Items' : 'Item'}
                 </span>
-                <span className="text-info">Subtotal: $999</span>
-                <div className="card-actions">
-                  <button className="btn btn-primary btn-block">
-                    View cart
-                  </button>
-                </div>
+                <span className="text-lg text-green-600">
+                  Subtotal: {getCurrencySymbol()} {computedTotal}
+                </span>
               </div>
             </div>
           </div>

@@ -6,35 +6,70 @@ import React, {
   useCallback,
 } from 'react';
 import { Product } from './models/products';
-
-interface CartContextType {
-  products: Product[];
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
-}
+import { CartContextType, ProductCart } from './models/productsCart';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
+document.body.onclick = () => {
+  const dropdown: HTMLElement | null = document.querySelector('.dropdown');
+  dropdown?.classList.remove('dropdown-open');
+}
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductCart[]>([]);
 
-  const addToCart = useCallback(
-    (product: Product) => {
-      setProducts((prevCart) => [...prevCart, product]);
+  const addToCart = useCallback((product: Product) => {
+    setProducts((prevProducts) => {
+      const existingProductIndex = prevProducts.findIndex(
+        (p) => p.product.id === product.id,
+      );
+      if (existingProductIndex !== -1) {
+        const updatedProducts = [...prevProducts];
+        updatedProducts[existingProductIndex].quantity += 1;
+        updatedProducts[existingProductIndex].value =
+          updatedProducts[existingProductIndex].quantity * product.price;
+        return updatedProducts;
+      } else {
+        return [
+          ...prevProducts,
+          { product, quantity: 1, value: product.price },
+        ];
+      }
+    });
+  }, []);
+
+  const removeFromCart = useCallback(
+    (event: Event, productId: number) => {
+      // necessário para impedir de fechar o dropdown quando um item é removido.
+      event.stopPropagation()
+      const dropdown: HTMLElement | null = document.querySelector('.dropdown');
+      dropdown?.classList.add('dropdown-open');
+      setProducts((prevCartItems) =>
+        prevCartItems.filter((x) => x.product.id !== productId),
+      );
     },
-    [products],
+    [setProducts],
   );
 
-  const removeFromCart = useCallback((productId: number) => {
+  const decremnentProduct = useCallback((productId: number) => {
     setProducts((prevCart) =>
-      prevCart.filter((product) => product.id !== productId),
+      prevCart.map((productCart) =>
+        productCart.product.id === productId
+          ? {
+              ...productCart,
+              quantity: Math.max(0, productCart.quantity - 1),
+              value: Math.max(0, productCart.value - productCart.product.price),
+            }
+          : productCart,
+      ),
     );
   }, []);
 
   return (
-    <CartContext.Provider value={{ products, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ products, addToCart, decremnentProduct, removeFromCart }}
+    >
       {children}
     </CartContext.Provider>
   );
