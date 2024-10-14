@@ -29,23 +29,23 @@ export default function Cards(props: Product) {
   const fullPrice = ((1 + discountPercentage / 100) * price).toFixed(2);
   const starts = Math.round(rating);
   return (
-    <div className="flex flex-col justify-between w-inherit border-transparent border-2 hover:border-green-300 hover:border-2 overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-      <button className="flex flex-col mx-3 mt-3 flex h-auto md:h-60 overflow-hidden rounded-xl">
+    <div className="flex flex-col justify-between w-inherit border-transparent border-2 hover:border-green-300 hover:border-2 overflow-hidden rounded-lg border border-gray-100 bg-white dark:bg-stone-400 shadow-md">
+      <button className="flex flex-col mx-3 mt-3 flex overflow-hidden rounded-xl">
+        <span className="w-5/12 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white m-0">
+          {discountPercentage}% OFF
+        </span>
         <div
           id={`skeleton-id-${id}`}
-          className="skeleton h-[270px] w-[270px]"
+          className="skeleton w-full h-[20rem] bg-stone-300 flex items-center justify-center"
         ></div>
         <img
           id={`image-id-${id}`}
-          className="object-cover w-full bg-transparent hidden"
+          className="object-cover w-full hidden"
           loading="eager"
           src={thumbnail}
           alt="product image"
           onLoad={() => handleImageLoad(`image-id-${id}`, `skeleton-id-${id}`)}
         />
-        <span className="w-5/12 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white -mt-[260px]">
-          {discountPercentage}% OFF
-        </span>
       </button>
       <div className="mt-4 px-5 pb-5">
         <h5 className="text-xl tracking-tight text-slate-900">{title}</h5>
