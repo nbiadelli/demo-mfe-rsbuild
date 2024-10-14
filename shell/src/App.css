@@ -8,3 +8,30 @@
 /*   font-family: Inter, Avenir, Helvetica, Arial, sans-serif; */
 /*   background-image: linear-gradient(to bottom, #020917, #101725); */
 /* } */
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"].number-to-text {
+  -moz-appearance: textfield;
+}
+
+.animated-background:hover {
+  display: inline-block;
+  animation: color-transition .4s normal forwards ease-in-out;
+}
+
+@keyframes color-transition {
+  0% {
+    background-color: transparent;
+    background-size: 0% 0%;
+  }
+
+  100% {
+    background-color: rgb(21, 128, 61, 0.2);
+    background-size: 100% 100%;
+  }
+}

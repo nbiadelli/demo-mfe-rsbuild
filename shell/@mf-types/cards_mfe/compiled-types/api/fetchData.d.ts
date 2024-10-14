@@ -1,1 +1,4 @@
-export declare const fetchData: <T>(url: string, traverseData?: (data: any) => T) => Promise<T>;
+export declare const fetchData: <T>(
+  url: string,
+  traverseData?: (data: any) => T,
+) => Promise<T>;

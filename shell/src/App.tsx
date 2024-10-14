@@ -1,7 +1,7 @@
 import './App.css';
 
 import CardsMfe from 'cards_mfe/Cards';
-import FooterMfe from 'footer_mfe/button';
+import FooterMfe from 'footer_mfe/Footer';
 import NavbarMfe from 'header_mfe/Navbar';
 
 import eventBus from './eventBus';
