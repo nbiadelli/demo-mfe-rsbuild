@@ -25,7 +25,7 @@ export default defineConfig({
         new ModuleFederationPlugin({
           name: 'footer_mfe',
           exposes: {
-            './button': './src/button.tsx',
+            './Footer': './src/Footer.tsx',
           },
           shared: ['react', 'react-dom'],
         }),
