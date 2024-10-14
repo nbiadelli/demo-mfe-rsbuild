@@ -11,7 +11,9 @@
     "resolveJsonModule": true,
     "moduleResolution": "bundler",
     "useDefineForClassFields": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["src"]
 }
