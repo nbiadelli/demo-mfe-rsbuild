@@ -8,6 +8,9 @@ export interface ProductCart {
 export interface CartContextType {
   products: ProductCart[];
   addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
+  removeFromCart: (
+    event: React.MouseEvent<Element, MouseEvent>,
+    productId: number,
+  ) => void;
   decremnentProduct: (productId: number) => void;
 }

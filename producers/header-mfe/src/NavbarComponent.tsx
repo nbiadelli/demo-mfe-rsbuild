@@ -2,6 +2,11 @@ import { useEffect } from 'react';
 import { Product } from './models/products';
 import { useCartContext } from './CartContext';
 
+document.body.onclick = () => {
+  const dropdown: HTMLElement | null = document.querySelector('.dropdown');
+  dropdown?.classList.remove('dropdown-open');
+};
+
 function getCurrencySymbol() {
   const userLocale = navigator?.language;
   const currencyFormatter = new Intl.NumberFormat(userLocale, {
@@ -85,12 +90,13 @@ export default function NavbarComponent() {
             <div
               tabIndex={0}
               role="button"
+              data-testid="btn-cart"
               className="btn btn-ghost btn-circle"
             >
               <div className="indicator">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
+                  className="h-6 w-6"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -131,6 +137,7 @@ export default function NavbarComponent() {
                           <td className="flex flex-row items-center gap-1">
                             <button
                               className="w-4 h-4 bg-slate-100 hover:bg-red-300 text-white rounded-full flex items-center justify-center inline-block"
+                              data-testid="btn-remove-item"
                               onClick={(e) => removeFromCart(e, x.product.id)}
                             >
                               <svg
@@ -154,6 +161,7 @@ export default function NavbarComponent() {
                             <div className="flex items-center border border-gray-300 rounded space-x-2 w-[101px]">
                               <button
                                 id="decrement"
+                                data-testid="btn-decr-to-cart"
                                 className={`text-green-600 font-black m-[2px] px-2 py-1 rounded focus:outline-none animated-background ${
                                   x.quantity === 0 ? 'opacity-30' : ''
                                 }`}
@@ -166,6 +174,7 @@ export default function NavbarComponent() {
                               </span>
                               <button
                                 id="increment"
+                                data-testid="btn-add-to-cart"
                                 className="text-green-600 font-black  m-[2px] px-2 py-1 rounded focus:outline-none animated-background"
                                 onClick={() => addToCart(x.product)}
                               >

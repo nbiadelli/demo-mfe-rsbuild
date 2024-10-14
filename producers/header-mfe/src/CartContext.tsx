@@ -8,11 +8,9 @@ import React, {
 import { Product } from './models/products';
 import { CartContextType, ProductCart } from './models/productsCart';
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
-document.body.onclick = () => {
-  const dropdown: HTMLElement | null = document.querySelector('.dropdown');
-  dropdown?.classList.remove('dropdown-open');
-}
+export const CartContext = createContext<CartContextType | undefined>(
+  undefined,
+);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -40,9 +38,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   const removeFromCart = useCallback(
-    (event: Event, productId: number) => {
+    (event: React.MouseEvent<Element, MouseEvent>, productId: number) => {
       // necessário para impedir de fechar o dropdown quando um item é removido.
-      event.stopPropagation()
+      event.stopPropagation();
       const dropdown: HTMLElement | null = document.querySelector('.dropdown');
       dropdown?.classList.add('dropdown-open');
       setProducts((prevCartItems) =>
