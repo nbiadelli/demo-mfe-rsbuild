@@ -1,0 +1,37 @@
+services:
+  header:
+    build:
+      context: ./producers/header-mfe/
+    ports:
+      - "3091:3091"
+    networks:
+      - app-network
+  cards:
+    build:
+      context: ./producers/cards-mfe/
+    ports:
+      - "3092:3092"
+    networks:
+      - app-network
+  footer:
+    build:
+      context: ./producers/footer-mfe/
+    ports:
+      - "3093:3093"
+    networks:
+      - app-network
+  shell:
+    build:
+      context: .
+    depends_on:
+      - header
+      - cards
+      - footer
+    ports:
+      - "3000:3000"
+      - "16322:16322"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
